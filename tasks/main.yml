@@ -1,2 +1,13 @@
 ---
-# tasks file for template
+- name: Gather OS specific variables for Nagios
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution|lower }}-{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_distribution|lower }}.yml"
+
+- name: Install Nagios packages
+  package:
+    name: "{{ nagios_packages }}"
+    state: present
+  tags:
+    - configuration
