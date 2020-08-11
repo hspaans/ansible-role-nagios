@@ -2,3 +2,4 @@
 nagios_packages:
   - nagios4
   - nagios-nrpe-plugin
+nagios_service: nagios4.service
