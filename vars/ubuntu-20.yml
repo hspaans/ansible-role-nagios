@@ -1,3 +1,4 @@
 ---
 nagios_packages:
   - nagios4
+  - nagios-nrpe-plugin
