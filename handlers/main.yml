@@ -1,2 +1,5 @@
 ---
-# handlers file for template
+- name: restart nagios
+  service:
+    name: "{{ nagios_service }}"
+    state: restarted
