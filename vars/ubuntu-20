@@ -1,0 +1,3 @@
+---
+nagios_packages:
+  - nagios4
