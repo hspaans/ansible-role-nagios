@@ -11,3 +11,26 @@
     state: present
   tags:
     - configuration
+
+- name: Create Nagios conf.d directory
+  file:
+    path: "{{ nagios_server_confd_dir }}"
+    owner: root
+    group: "{{ nagios_server_group }}"
+    mode: 0750
+    state: directory
+  tags:
+    - configuration
+
+- name: Copy Nagios dropin configurations
+  copy:
+    src: "{{ item }}"
+    dest: "{{ nagios_confd_dir }}"
+    owner: root
+    group: "{{ nagios_group }}"
+    mode: 0640
+  with_fileglob:
+    - nagios/conf.d/*
+  notify: restart nagios
+  tags:
+    - packages
