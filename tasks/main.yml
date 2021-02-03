@@ -4,13 +4,20 @@
   with_first_found:
     - "{{ ansible_distribution|lower }}-{{ ansible_distribution_major_version }}.yml"
     - "{{ ansible_distribution|lower }}.yml"
+    - "main.yml"
+
+- name: Update apt cache (on Debian).
+  apt:
+    update_cache: true
+    cache_valid_time: 3600
+  when: ansible_os_family == 'Debian'
 
 - name: Install Nagios packages
   package:
     name: "{{ nagios_packages }}"
     state: present
   tags:
-    - configuration
+    - packages
 
 - name: Create Nagios conf.d directory
   file:
@@ -31,6 +38,30 @@
     mode: 0640
   with_fileglob:
     - nagios/conf.d/*
+  notify: restart nagios
+  tags:
+    - packages
+
+- name: Create local plugins directory
+  file:
+    path: /usr/local/lib/nagios/plugins
+    owner: root
+    group: root
+    mode: 0750
+    state: directory
+    recurse: true
+  tags:
+    - configuration
+
+- name: Copy local plugins
+  copy:
+    src: "{{ item }}"
+    dest: /usr/local/lib/nagios/plugins
+    owner: root
+    group: "{{ nagios_group }}"
+    mode: 0750
+  with_fileglob:
+    - nagios/plugins/*
   notify: restart nagios
   tags:
     - packages
