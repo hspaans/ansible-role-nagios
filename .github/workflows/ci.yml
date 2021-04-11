@@ -35,6 +35,7 @@ jobs:
           - "ansible-base==2.10.*"
         distro:
           - debian10
+          - debian11
           - ubuntu2004
 
     steps:
