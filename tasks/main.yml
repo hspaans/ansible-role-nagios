@@ -12,6 +12,12 @@
     cache_valid_time: 3600
   when: ansible_os_family == 'Debian'
 
+- name: Install cron (on Debian).
+  package:
+    name: cron
+    state: present
+  when: ansible_os_family == 'Debian'
+
 - name: Install Nagios packages
   package:
     name: "{{ nagios_packages }}"
