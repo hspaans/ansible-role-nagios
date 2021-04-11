@@ -12,6 +12,12 @@
     cache_valid_time: 3600
   when: ansible_os_family == 'Debian'
 
+- name: Install cron (on Debian).
+  package:
+    name: cron
+    state: present
+  when: ansible_os_family == 'Debian'
+
 - name: Install Nagios packages
   package:
     name: "{{ nagios_packages }}"
@@ -47,9 +53,8 @@
     path: /usr/local/lib/nagios/plugins
     owner: root
     group: root
-    mode: 0750
+    mode: 0755
     state: directory
-    recurse: true
   tags:
     - configuration
 
@@ -65,3 +70,57 @@
   notify: restart nagios
   tags:
     - packages
+
+- name: Copy Slack Notification Script
+  template:
+    src: notification-slack.pl.j2
+    dest: "/usr/local/lib/nagios/plugins/notification-slack.pl"
+    owner: root
+    group: "{{ nagios_group }}"
+    mode: 0750
+  tags:
+    - configuration
+
+- name: Copy Slack Notification Configuration
+  template:
+    src: notification-slack.cfg.j2
+    dest: "{{ nagios_confd_dir }}/notification-slack.cfg"
+    owner: root
+    group: "{{ nagios_group }}"
+    mode: 0640
+  notify: restart nagios
+  tags:
+    - configuration
+
+- name: Sent out a heartbeat via Slack every six hours
+  cron:
+    name: "Slack Heartbeat message every six hours"
+    minute: "0"
+    hour: "6,18"
+    job: >
+      '/usr/local/lib/nagios/plugins/notification-slack.pl
+      -field slack_channel={{ nagios_slack_channel_service }}
+      -field HOSTALIAS="localhost"
+      -field SERVICEDESC="Heartbeat"
+      -field SERVICESTATE="UP"
+      -field SERVICEOUTPUT="OK"
+      -field NOTIFICATIONTYPE="ACKNOWLEDGEMENT"'
+  tags:
+    - configuration
+    - scheduling
+
+- name: Sent out a heartbeat via Slack at @reboot
+  cron:
+    name: "Slack Heartbeat message at reboot"
+    special_time: reboot
+    job: >
+      '/usr/local/lib/nagios/plugins/notification-slack.pl
+      -field slack_channel={{ nagios_slack_channel_host }}
+      -field HOSTALIAS="localhost"
+      -field SERVICEDESC="Heartbeat"
+      -field SERVICESTATE="UP"
+      -field SERVICEOUTPUT="WARNING"
+      -field NOTIFICATIONTYPE="RECOVERY"'
+  tags:
+    - configuration
+    - scheduling

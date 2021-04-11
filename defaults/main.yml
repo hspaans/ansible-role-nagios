@@ -1,2 +1,3 @@
 ---
-# defaults file for template
+nagios_slack_channel_service: "#alert"
+nagios_slack_channel_host: "#ops"
