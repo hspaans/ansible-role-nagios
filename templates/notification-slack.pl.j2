@@ -1,6 +1,5 @@
 #!/usr/bin/perl
 
-
 # Copyright 2013 Tiny Speck, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -58,19 +57,15 @@ use HTTP::Request::Common qw(POST);
 use HTTP::Status qw(is_client_error);
 use LWP::UserAgent;
 
-
 #
 # Customizable vars. Set these to the information for your team
 #
-
 my $opt_domain = "{{ nagios_server_slack_domain | default('localhost') }}"; # Your team's domain
 my $opt_token = "{{ nagios_server_slack_token | default('invalid') }}"; # The token from your Nagios services page
-
 
 #
 # Get command-line opts
 #
-
 my %opt_fields;
 GetOptions("field=s%" => \%opt_fields);
 
@@ -78,13 +73,12 @@ GetOptions("field=s%" => \%opt_fields);
 #
 # DO THINGS
 #
-
 my %event;
 
 # Get all Nagios variables
 while ((my $k, my $v) = each %ENV) {
-	next unless $k =~ /^(?:NAGIOS|ICINGA)_(.*)$/;
-	$event{$1} = $v;
+  next unless $k =~ /^(?:NAGIOS|ICINGA)_(.*)$/;
+  $event{$1} = $v;
 }
 
 # Merge in passed-in variables
@@ -92,11 +86,9 @@ while ((my $k, my $v) = each %ENV) {
 
 $event{"slack_version"} = "1.1";
 
-
 #
 # Make the request
 #
-
 my $ua = LWP::UserAgent->new;
 $ua->timeout(15);
 

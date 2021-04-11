@@ -109,13 +109,13 @@
     name: "Slack Heartbeat message at reboot"
     special_time: reboot
     job: >
-     '/usr/local/lib/nagios/plugins/notification-slack.pl
-     -field slack_channel={{ nagios_slack_channel_host }}
-     -field HOSTALIAS="localhost"
-     -field SERVICEDESC="Heartbeat"
-     -field SERVICESTATE="UP"
-     -field SERVICEOUTPUT="WARNING"
-     -field NOTIFICATIONTYPE="RECOVERY"'
+      '/usr/local/lib/nagios/plugins/notification-slack.pl
+      -field slack_channel={{ nagios_slack_channel_host }}
+      -field HOSTALIAS="localhost"
+      -field SERVICEDESC="Heartbeat"
+      -field SERVICESTATE="UP"
+      -field SERVICEOUTPUT="WARNING"
+      -field NOTIFICATIONTYPE="RECOVERY"'
   tags:
     - configuration
     - scheduling
