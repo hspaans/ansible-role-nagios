@@ -29,8 +29,14 @@ jobs:
           - "ansible==2.9.*"
           - "ansible==2.10.*"
         distro:
+<<<<<<< HEAD:.github/workflows/ansible-ci.yml
           - debian:10
           - ubuntu:20.04
+=======
+          - debian10
+          - debian11
+          - ubuntu2004
+>>>>>>> 865612e (Initial tests for Debian 11):.github/workflows/ci.yml
 
     steps:
       - name: Check out the codebase
