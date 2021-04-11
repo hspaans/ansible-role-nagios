@@ -60,8 +60,8 @@ use LWP::UserAgent;
 #
 # Customizable vars. Set these to the information for your team
 #
-my $opt_domain = "{{ nagios_server_slack_domain | default('localhost') }}"; # Your team's domain
-my $opt_token = "{{ nagios_server_slack_token | default('invalid') }}"; # The token from your Nagios services page
+my $opt_domain = "{{ nagios_slack_domain | default('localhost') }}"; # Your team's domain
+my $opt_token = "{{ nagios_slack_token | default('invalid') }}"; # The token from your Nagios services page
 
 #
 # Get command-line opts
