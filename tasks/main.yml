@@ -49,7 +49,6 @@
     group: root
     mode: 0755
     state: directory
-    recurse: true
   tags:
     - configuration
 
@@ -79,9 +78,9 @@
 - name: Copy Slack Notification Configuration
   template:
     src: notification-slack.cfg.j2
-    dest: "{{ nagios_server_confd_dir }}/notification-slack.cfg"
+    dest: "{{ nagios_confd_dir }}/notification-slack.cfg"
     owner: root
-    group: "{{ nagios_server_group }}"
+    group: "{{ nagios_group }}"
     mode: 0640
   notify: restart nagios
   tags:
