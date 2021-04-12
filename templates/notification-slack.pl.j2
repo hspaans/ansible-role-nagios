@@ -95,8 +95,8 @@ $ua->timeout(15);
 my $req = POST("https://${opt_domain}/services/hooks/nagios?token=${opt_token}", \%event);
 
 my $s = $req->as_string;
-print STDERR "Request:\n$s\n";
+##print STDERR "Request:\n$s\n";
 
 my $resp = $ua->request($req);
 $s = $resp->as_string;
-print STDERR "Response:\n$s\n";
+##print STDERR "Response:\n$s\n";
