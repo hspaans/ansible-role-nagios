@@ -55,16 +55,7 @@
     group: "{{ nagios_group }}"
     mode: 0750
     state: directory
-  tags:
-    - configuration
-
-- name: Create local Nagios plugins directory
-  file:
-    path: /usr/local/lib/nagios
-    owner: root
-    group: "{{ nagios_group }}"
-    mode: 0750
-    state: directory
+    recurse: yes
   tags:
     - configuration
 
@@ -115,7 +106,6 @@
       -field SERVICESTATE="UP"
       -field SERVICEOUTPUT="OK"
       -field NOTIFICATIONTYPE="ACKNOWLEDGEMENT"
-      > /dev/null
   tags:
     - configuration
     - scheduling
@@ -132,7 +122,6 @@
       -field SERVICESTATE="UP"
       -field SERVICEOUTPUT="WARNING"
       -field NOTIFICATIONTYPE="RECOVERY"
-      > /dev/null
   tags:
     - configuration
     - scheduling
