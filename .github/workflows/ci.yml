@@ -36,6 +36,7 @@ jobs:
           - "ansible==3.*"
         distro:
           - debian10
+          - debian11
           - ubuntu2004
 
     steps:
