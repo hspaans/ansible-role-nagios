@@ -48,17 +48,18 @@
   tags:
     - packages
 
-- name: Create local plugins directory
+- name: Create local Nagios directory
   file:
     path: /usr/local/lib/nagios/plugins
     owner: root
-    group: root
-    mode: 0755
+    group: "{{ nagios_group }}"
+    mode: 0750
     state: directory
+    recurse: yes
   tags:
     - configuration
 
-- name: Copy local plugins
+- name: Copy local Nagios plugins
   copy:
     src: "{{ item }}"
     dest: /usr/local/lib/nagios/plugins
@@ -92,19 +93,19 @@
   tags:
     - configuration
 
-- name: Sent out a heartbeat via Slack every six hours
+- name: Sent out a heartbeat via Slack
   cron:
-    name: "Slack Heartbeat message every six hours"
+    name: "Slack Heartbeat message"
     minute: "0"
     hour: "6,18"
     job: >
-      '/usr/local/lib/nagios/plugins/notification-slack.pl
+      /usr/local/lib/nagios/plugins/notification-slack.pl
       -field slack_channel={{ nagios_slack_channel_service }}
       -field HOSTALIAS="localhost"
       -field SERVICEDESC="Heartbeat"
       -field SERVICESTATE="UP"
       -field SERVICEOUTPUT="OK"
-      -field NOTIFICATIONTYPE="ACKNOWLEDGEMENT"'
+      -field NOTIFICATIONTYPE="ACKNOWLEDGEMENT"
   tags:
     - configuration
     - scheduling
@@ -114,13 +115,13 @@
     name: "Slack Heartbeat message at reboot"
     special_time: reboot
     job: >
-      '/usr/local/lib/nagios/plugins/notification-slack.pl
+      /usr/local/lib/nagios/plugins/notification-slack.pl
       -field slack_channel={{ nagios_slack_channel_host }}
       -field HOSTALIAS="localhost"
       -field SERVICEDESC="Heartbeat"
       -field SERVICESTATE="UP"
       -field SERVICEOUTPUT="WARNING"
-      -field NOTIFICATIONTYPE="RECOVERY"'
+      -field NOTIFICATIONTYPE="RECOVERY"
   tags:
     - configuration
     - scheduling
