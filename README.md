@@ -1,36 +1,32 @@
-Role Name
-=========
+# Role Name
 
 Install and maintain Nagios.
 
-Requirements
-------------
+## Requirements
 
 None.
 
-Role Variables
---------------
+## Role Variables
 
 Default variables are set in `defaults/main.yml`.
 
-Dependencies
-------------
+## Dependencies
 
 No dependency on other Ansible Galaxy roles.
 
-Example Playbook
-----------------
+## Example Playbook
 
-    - hosts: servers
-      roles:
-        - { role: hspaans.nagios, become: true }
+```yaml
+---
+- hosts: servers
+  roles:
+    - { role: hspaans.nagios, become: true }
+```
 
-License
--------
+## License
 
 MIT
 
-Author Information
-------------------
+## Author Information
 
 This role was created in 2020 by [Hans Spaans](https://github.com/hspaans).

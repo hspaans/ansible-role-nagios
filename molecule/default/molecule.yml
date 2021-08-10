@@ -5,12 +5,19 @@ driver:
   name: docker
 lint: |
   set -e
-  yamllint .
+  yamllint `git ls-files '*.yaml' '*.yml'`
   ansible-lint
   flake8
 platforms:
-  - name: instance
-    image: "ghcr.io/hspaans/molecule-container-${MOLECULE_DISTRO}"
+  - name: debian-10
+    image: "ghcr.io/hspaans/molecule-container-debian:10"
+    command: ""
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+  - name: debian-11
+    image: "ghcr.io/hspaans/molecule-container-debian:11"
     command: ""
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
@@ -18,5 +25,9 @@ platforms:
     pre_build_image: true
 provisioner:
   name: ansible
+  inventory:
+    group_vars:
+      all:
+        nagios_plugin_packages: []
 verifier:
   name: testinfra
